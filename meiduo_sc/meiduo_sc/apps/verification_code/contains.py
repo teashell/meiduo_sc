@@ -1,0 +1,1 @@
+IMG_CODE_EXPIRE = 10 * 60
