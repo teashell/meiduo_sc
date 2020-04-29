@@ -3,9 +3,12 @@ from django.shortcuts import render, redirect
 from django.views import View
 import re
 from . import models
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login,logout
+from django.contrib.auth import authenticate
 from meiduo_sc.utils.response_code import RETCODE
 from django_redis import get_redis_connection
+from .constants import USER_COOKIE_EXPIRE
+from meiduo_sc.utils.islogin import IsLoginMixin
 
 
 # Create your views here.
@@ -97,6 +100,7 @@ class PhoneTesting(View):
 
 # 处理登录的类视图
 class LoginView(View):
+
     def get(self, request):
         return render(request, 'login.html')
 
@@ -105,9 +109,43 @@ class LoginView(View):
         # 获取用户,密码
         username = request.POST.get('username')
         password = request.POST.get('pwd')
+        next_url = request.GET.get('next')
 
-        user = authenticate(username=username, password=password)
+        user = authenticate(request, username=username, password=password)
         if user is None:
             return HttpResponseForbidden('用户名或者密码错误或者用户不存在')
         else:
-            return redirect('/')
+            # 状态保持
+            login(request, user)
+
+            if next_url:
+                response = redirect(next_url)
+            else:
+                response = redirect('/')
+            # 设置cookie值
+            response.set_cookie('username', username, USER_COOKIE_EXPIRE)
+            return response
+
+
+# 处理登出的类视图
+class LogoutView(View):
+
+    def get(self, request):
+        # 服务端退出
+        logout(request)
+        # 删除客户端cookie,彻底退出
+        response = redirect('/')
+        response.delete_cookie('username')
+        return response
+
+
+# 处理用户中心的类视图
+class UsercenterView(IsLoginMixin, View):
+
+    def get(self, request):
+        # 验证是否登录
+        # if request.user.is_authenticated:
+        #     return render(request, 'user_center_info.html')
+        # else:
+        #     return redirect('/login/')
+        return render(request, 'user_center_info.html')

@@ -29,7 +29,7 @@ SECRET_KEY = 'a9k8d$=tj9s25=r)31p=6a#9b_45e^oj-=+3t()xfcrn_%r0!v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.meiduo.site', '127.0.0.1']
 
 
 # Application definition
@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'users.apps.UsersConfig',
-    'verification_code.apps.VerificationCodeConfig'
+    'verification_code.apps.VerificationCodeConfig',
+    'contents.apps.ContentsConfig',
+    'oAuth.apps.OauthConfig'
 ]
 
 MIDDLEWARE = [
@@ -230,3 +232,14 @@ LOGGING = {
 
 # 配置用户模型类指向:
 AUTH_USER_MODEL = 'users.User'
+
+# 自定义认证后端
+AUTHENTICATION_BACKENDS =['meiduo_sc.utils.authenticate.MyBackend']
+
+# 未通过的重定向网址
+LOGIN_URL = '/login/'
+
+# QQ登录参数
+QQ_CLIENT_ID = '101518219'
+QQ_CLIENT_SECRET = '418d84ebdc7241efb79536886ae95224'
+QQ_REDIRECT_URI = 'http://www.meiduo.site:8000/oauth_callback'

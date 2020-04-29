@@ -20,5 +20,7 @@ from django.conf.urls import url, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^', include('users.urls')),
-    url(r'^', include('verification_code.urls'))
+    url(r'^', include('verification_code.urls')),
+    url(r'^', include('contents.urls')),
+    url(r'^', include('oAuth.urls'))
 ]
