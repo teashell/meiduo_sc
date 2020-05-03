@@ -4,17 +4,17 @@ from django.conf import settings
 
 
 # 加密
-def dumps(obj, expire):
+def dumps(obj):
     secret_key = settings.SECRET_KEY
-    s = JSONWebSignatureSerializer(secret_key, expire)
-    json_str = s.dumps(obj)
+    s = JSONWebSignatureSerializer(secret_key)
+    json_str = s.dumps(obj).decode()
     return json_str
 
 
 # 解密
-def loads(json, expire):
+def loads(json):
     secret_key = settings.SECRET_KEY
-    s = JSONWebSignatureSerializer(secret_key, expire)
+    s = JSONWebSignatureSerializer(secret_key)
     try:
         obj = s.loads(json)
     except:
