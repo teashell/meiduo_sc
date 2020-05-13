@@ -87,9 +87,10 @@
 
 	<div class="pos_center_con clearfix">
 		<ul class="slide">
-            {% for content in contents.index_lbt %}
-			<li><a href="{{ content.url }}"><img src="{{ content.image }}" alt="{{ content.title }}"></a></li>
-            {% endfor %}
+			<li><a href="#"><img src="/static/images/slide01.jpg" alt="幻灯片01"></a></li>
+			<li><a href="#"><img src="/static/images/slide02.jpg" alt="幻灯片02"></a></li>
+			<li><a href="#"><img src="/static/images/slide03.jpg" alt="幻灯片03"></a></li>
+			<li><a href="#"><img src="/static/images/slide04.jpg" alt="幻灯片04"></a></li>
 		</ul>
 		<div class="prev"></div>
 		<div class="next"></div>
@@ -109,7 +110,7 @@
 						<div class="group_name fl">{{ sub2.name }} &gt;</div>
 						<div class="group_detail fl">
                             {% for sub3 in sub2.sub_cat %}
-							<a href="/list/{{ sub3.id }}/1">{{ sub3.name }}</a>
+							<a href="/static/{{ sub3.url }}">{{ sub3.name }}</a>
                             {% endfor %}
 						</div>						
 					</div>
@@ -125,9 +126,13 @@
 				<a href="#">更多 &gt;</a>
 			</div>
 			<ul class="news_list">
-                {% for content in contents.index_kx %}
-				<li><a href="{{ content.url }}">{{ content.title }}</a></li>
-                {% endfor %}
+				<li><a href="#">i7顽石低至4199元</a></li>
+				<li><a href="#">奥克斯专场 正1匹空调1313元抢</a></li>
+				<li><a href="#">荣耀9青春版 高配 领券立减220元</a></li>
+				<li><a href="#">美多探索公益新模式</a></li>
+				<li><a href="#">i7顽石低至4199元</a></li>
+				<li><a href="#">正1匹空调1313元抢</a></li>
+				<li><a href="#">奥克斯专场 正1匹空调1313元抢</a></li>
 			</ul>
 			<a href="#" class="advs"><img src="/static/images/adv01.jpg"></a>
 		</div>
