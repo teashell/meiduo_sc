@@ -109,11 +109,11 @@
 	</div>
 
 	<div class="breadcrumb">
-		<a href="http://shouji.jd.com/">{{ cat1 }}</a>
+		<a href="http://shouji.jd.com/">{{ cat.cat1 }}</a>
 		<span>></span>
-		<a href="javascript:;">{{ cat2 }}</a>
+		<a href="javascript:;">{{ cat.cat2 }}</a>
         <span>></span>
-		<a href="javascript:;">{{ cat3 }}</a>
+		<a href="javascript:;">{{ cat.cat3 }}</a>
 	</div>
 
 	<div class="main_wrap clearfix">
@@ -140,8 +140,8 @@
 			<ul class="goods_type_list clearfix">
                 {% for sku in page_skus %}
 				<li>
-					<a href="detail.html"><img src="/static/images/goods/goods003.jpg"></a>
-					<h4><a href="detail.html">{{ sku.name }}</a></h4>
+					<a href="/detail/{{ sku.id }}/"><img src="/static/images/goods/goods003.jpg"></a>
+					<h4><a href="/detail/{{ sku.id }}/">{{ sku.name }}</a></h4>
 					<div class="operate">
 						<span class="price">{{ sku.price }}</span>
 						<span class="unit">台</span>

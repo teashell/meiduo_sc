@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^', include('contents.urls')),
     url(r'^', include('oAuth.urls')),
     url(r'^', include('area.urls')),
-    url(r'^', include('goods.urls'))
+    url(r'^', include('goods.urls')),
+    url(r'^search/', include('haystack.urls')),
 ]

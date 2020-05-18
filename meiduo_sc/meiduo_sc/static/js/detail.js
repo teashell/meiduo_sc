@@ -95,7 +95,7 @@ var vm = new Vue({
         },
         // 获取热销商品数据
         get_hot_goods(){
-            var url = this.hots + '/hot/' + this.category_id + '/';
+            var url = this.host + '/hot/' + this.category_id + '/';
             axios.get(url, {
                 responseType: 'json'
             })

@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'contents.apps.ContentsConfig',
     'oAuth.apps.OauthConfig',
     'area.apps.AreaConfig',
-    'goods.apps.GoodsConfig'
+    'goods.apps.GoodsConfig',
+    'haystack'
 ]
 
 MIDDLEWARE = [
@@ -255,3 +256,14 @@ EMAIL_HOST_PASSWORD = 'AEVMXWNLUHGAGHXV' # 邮箱授权时获得的密码，非�
 EMAIL_FROM = '美多商城<workecyu@163.com>' # 发件人抬头
 # 邮箱的验证地址
 EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
+
+# 配置Haystack
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
+        'INDEX_NAME': 'meiduo_search', # Elasticsearch建立的索引库的名称
+    },
+}
+# 当添加、修改、删除数据时，自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
