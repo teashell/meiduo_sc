@@ -8,6 +8,8 @@ from django.core.paginator import Paginator
 from .constans import NUM_PER_PAGE
 from meiduo_sc.utils.response_code import RETCODE
 from meiduo_sc.utils.breadcrumb import get_bread
+import json
+from django_redis import get_redis_connection
 
 
 # Create your views here.
@@ -154,5 +156,66 @@ class VisitView(View):
         return JsonResponse({
             'code': RETCODE.OK,
             'errmsg': 'OK'
+        })
+    pass
+
+
+class HistoryView(View):
+    def post(self, request):
+        # 接收
+        sku_id = request.body.decode('utf-8')
+        sku_id = json.loads(sku_id).get('sku_id')
+        print('sku_id:', sku_id)
+        print('sku_id的类型:', type(sku_id))
+        # 检验(1.是否存在？2.用户是否登录)
+        if sku_id is None:
+            return JsonResponse({
+                'code': RETCODE.PARAMERR,
+                'errmsg': '必要参数不存在'
+            })
+        if not request.user.is_authenticated:
+            return JsonResponse({
+                'code': RETCODE.USERERR,
+                'errmsg': '用户未登录'
+            })
+        # 处理
+        conn = get_redis_connection('history')
+        key = f'history_{request.user.id}'
+        # 删除已经存在的key中的sku_id信息
+        conn.lrem(key, 0, sku_id)
+        # 将新信息存到表头
+        conn.lpush(key, sku_id)
+        # 最多取五条信息
+        conn.ltrim(key, 0, 4)
+        return JsonResponse({
+            'code':RETCODE.OK,
+            'errmsg': 'OK'
+        })
+
+    def get(self, request):
+        # 验证是否登录
+        if not request.user.is_authenticated:
+            return JsonResponse({
+                'code': RETCODE.USERERR,
+                'errmsg': '用户未登录'
+            })
+        # 处理
+        conn = get_redis_connection('history')
+        sku_ids = conn.lrange(f'history_{request.user.id}', 0, -1)
+        sku_ids = [int(sku) for sku in sku_ids]
+        skus = []
+        # 遍历查询获取对应的sku对象
+        for sku_id in sku_ids:
+            sku = SKU.objects.get(pk=sku_id)
+            skus.append({
+                'id': sku.id,
+                'name': sku.name,
+                'default_image_url': None,
+                'price': sku.price
+            })
+        return JsonResponse({
+            'code': RETCODE.OK,
+            'errmsg': 'OK',
+            'skus': skus,
         })
     pass

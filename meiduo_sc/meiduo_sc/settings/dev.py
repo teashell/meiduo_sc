@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'oAuth.apps.OauthConfig',
     'area.apps.AreaConfig',
     'goods.apps.GoodsConfig',
-    'haystack'
+    'haystack',
+    'carts.apps.CartsConfig'
 ]
 
 MIDDLEWARE = [
@@ -183,6 +184,20 @@ CACHES = {
     "sms_code": { # 图片验证码的缓存
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/3",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    "history": { # 用户浏览记录
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/4",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    "carts": { # 购物车数据缓存
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/5",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
